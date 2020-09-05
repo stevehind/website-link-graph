@@ -6,7 +6,7 @@ from websitegraph import WebsiteGraph
 
 target_url = 'https://www.stevehind.me'
 website = ScrapedWebsite(target_url)
-graph = WebsiteGraph(target_url, 1)
+graph = WebsiteGraph(target_url)
 
 def test_returns_graph():
     graph_with_node = graph.add_url_as_node()
@@ -22,7 +22,7 @@ def test_adds_links_as_nodes():
     ]
     assert len(list(graph_with_links_as_nodes.nodes)) == 9
 
-def test_create_graph_addes_edges():
+def test_create_graph_adds_edges():
     graph_with_edges_between_nodes = graph.create_graph()
     assert list(graph_with_edges_between_nodes.edges)[0:3] == [
         ('https://www.stevehind.me','https://stevehind-dog-merch.builtwithdark.com'),

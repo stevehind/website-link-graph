@@ -1,10 +1,14 @@
 import requests
-from bs4 import BeautifulSoup 
 from typing import List
 import re
-import networkx as nx
-from matplotlib import pyplot as plt
-import websitegraph
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.expected_conditions import presence_of_element_located
+import time
+import sys
 
 class ScrapedWebsite:
     def __init__(self, url: str):
@@ -14,25 +18,44 @@ class ScrapedWebsite:
             request = requests.get(url)
         except:
             request = requests.get('https://www.example.com')
-        self.soup = BeautifulSoup(request.content, 'html5lib')
+
+        ## for selenium headless browser
+        self.chrome_driver_path = '/Users/stevehind/Google Drive/Programming/website-link-graph/chromedriver'
+
+        self.chrome_options = Options()
+        self.chrome_options.add_argument('--headless')
+        self.webdriver = webdriver.Chrome(
+            executable_path = self.chrome_driver_path, options = self.chrome_options
+        )
 
     def return_url(self) -> str:
         return self.url
 
     def return_page(self):
-        return self.soup
+        # return self.soup
+        ## scrape the website
+        with webdriver as driver:
+            # Set timeout time 
+            wait = WebDriverWait(driver, 10)
+            # retrive url in headless browser
+            return driver.get(self.url)
+            
+            # close
+            driver.close()
 
     def return_title(self):
         try:
             # TODO: regex this to remove the title tags
-            raw_title = self.soup.find('title') 
+            raw_title = self.return_page().find_element_by_id('title')
         except:
             raw_title = ''
 
         return str(raw_title)
 
     def scrape_raw_links(self) ->  List[str]:
-        raw_links = self.soup('a')
+        raw_links = self.return_title().find_element_by_id('a')
+        print(raw_links)
+
         link_strings = []
         for link in raw_links:
             link_strings.append(str(link)) 

@@ -23,7 +23,7 @@ def handle_url():
     url = request_data['url']
     print('Request url is: '+ url)
 
-    graph = WebsiteGraph(url, 1)
+    graph = WebsiteGraph(url)
     graph_image = graph.display_graph
 
     return render_template('index.html', url = url)

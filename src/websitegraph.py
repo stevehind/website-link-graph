@@ -7,10 +7,9 @@ from matplotlib import pyplot as plt
 import scrapedwebsite
 
 class WebsiteGraph:
-    def __init__(self, url, depth):
+    def __init__(self, url):
         self.url = url,
         self.links = scrapedwebsite.ScrapedWebsite(url).formatted_strings()
-        self.depth = depth
         self.G = nx.Graph()
     
     def add_url_as_node(self):
@@ -40,14 +39,6 @@ class WebsiteGraph:
                 self.G.add_edge(key, value_item)
         
         return self.G
-
-    def create_network_graph(self):
-        # make a graph from the first node
-        # make a graph from each first degree connection
-        ## set the link as the node
-        ## find its links
-        ## add each as an edge
-        return 'foo'
 
     def display_graph(self):
         try:
