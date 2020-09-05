@@ -7,7 +7,8 @@ from matplotlib.figure import Figure
 import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__),'./src'))
-from utils import ScrapedWebsite, WebsiteGraph
+from scrapedwebsite import ScrapedWebsite
+from websitegraph import WebsiteGraph
 
 app = Flask(__name__)
 

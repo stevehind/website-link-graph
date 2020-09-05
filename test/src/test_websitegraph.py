@@ -1,30 +1,12 @@
 import os
 import sys
-sys.path.append(os.path.join(os.path.dirname(__file__),'../src'))
-from utils import ScrapedWebsite, WebsiteGraph
+sys.path.append(os.path.join(os.path.dirname(__file__),'../../src'))
+from scrapedwebsite import ScrapedWebsite
+from websitegraph import WebsiteGraph
 
 target_url = 'https://www.stevehind.me'
 website = ScrapedWebsite(target_url)
 graph = WebsiteGraph(target_url, 1)
-
-def test_correctly_retrieves_url():
-    assert website.return_url() == target_url 
-
-def test_scrape_raw_links():
-    links = website.scrape_raw_links()
-    assert links[0:2] == [
-        '<a class="navbar-brand" href="/">stevehind.me</a>',
-        '<a href="https://stevehind-dog-merch.builtwithdark.com">dog-merch</a>'
-    ]
-
-def test_extracts_formatted_links():
-    links = website.formatted_strings()
-
-    assert links[0] == {
-        'url':  'https://stevehind-dog-merch.builtwithdark.com',
-        'title': '<title>Buy Sydney and Sesil Merch!</title>',
-        'external': True
-    }
 
 def test_returns_graph():
     graph_with_node = graph.add_url_as_node()
@@ -51,6 +33,3 @@ def test_create_graph_addes_edges():
 def test_output_graph():
     graph_image = graph.display_graph()
     assert graph_image == 'Image generated.'
-
-
-
