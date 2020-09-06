@@ -3,20 +3,35 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../src'))
 import networkgraph
 
-url = 'https://www.stevehind.me'
-nwgraph = networkgraph.NetworkGraph(url, 1)
+univ_url = 'https://www.stevehind.me'
+univ_nwgraph = networkgraph.NetworkGraph(univ_url, 1)
 
-target_nodes = [
-    'https://www.stevehind.me', 'https://stevehind-dog-merch.builtwithdark.com', 'https://stevehind.github.io/sms-steve/', 'https://stevehind-fifa-stats.builtwithdark.com', 'https://stevehind-betting-odds.builtwithdark.com/register', 'http://www.twitter.com/stevehind', 'http://www.linkedin.com/in/shind', 'http://www.github.com/stevehind', 'http://www.medium.com/@stevehind', 'https://avatars3.githubusercontent.com/u/17911380?s=400&amp;u=c56c6ac76fe8d4ca5118f8a49a251589436d01d1&amp;v=4" itemprop="image', 'https://docs.github.com/en/articles/blocking-a-user-from-your-personal-account', 'https://docs.github.com/en/articles/reporting-abuse-or-spam', 'https://docs.github.com/categories/setting-up-and-managing-your-github-profile'
-]
+# def test_creates_self_graph():
+#     url = 'https://stevehind.github.io/sms-steve/'
+#     nwgraph = networkgraph.NetworkGraph(url, 1)
+#     self_graph = nwgraph.return_self_graph()
+#     assert(list(self_graph.nodes)) == ['https://stevehind.github.io/sms-steve/', 'http://www.stevehind.me/']
 
 def test_creates_network_graph():
+    url = 'https://stevehind.github.io/sms-steve/'
+    nwgraph = networkgraph.NetworkGraph(url, 1)
     graph = nwgraph.create_network_graph()
+    target_nodes = ['https://stevehind.github.io/sms-steve/', 'http://www.stevehind.me/', 'https://stevehind-dog-merch.builtwithdark.com/', 'https://stevehind-fifa-stats.builtwithdark.com/', 'https://stevehind-betting-odds.builtwithdark.com/register', 'http://www.twitter.com/stevehind', 'http://www.linkedin.com/in/shind', 'http://www.github.com/stevehind', 'http://www.medium.com/@stevehind']
+    target_edges = [('https://stevehind.github.io/sms-steve/', 'http://www.stevehind.me/'), ('http://www.stevehind.me/', 'https://stevehind-dog-merch.builtwithdark.com/'), ('http://www.stevehind.me/', 'https://stevehind-fifa-stats.builtwithdark.com/'), ('http://www.stevehind.me/', 'https://stevehind-betting-odds.builtwithdark.com/register'), ('http://www.stevehind.me/', 'http://www.twitter.com/stevehind'), ('http://www.stevehind.me/', 'http://www.linkedin.com/in/shind'), ('http://www.stevehind.me/', 'http://www.github.com/stevehind'), ('http://www.stevehind.me/', 'http://www.medium.com/@stevehind')]
 
-    assert(list(graph.nodes)) == target_nodes
-    assert(list(graph.edges)) == 'foo'
+    # Don't need nodes to be in same order as provided in test, just for it to contain all the nodes
+    assert len(list(graph.nodes)) == len(target_nodes)
+    assert list(graph.nodes) == target_nodes
 
-# def test_draws_network_graph():
-#     graph_msg = nwgraph.draw_network_graph()
+    assert(list(graph.edges)) == target_edges
 
-#     assert(graph_msg) == 'Image generated.'
+def test_draws_network_graph():
+    url = 'https://stevehind.github.io/sms-steve/'
+    nwgraph = networkgraph.NetworkGraph(url, 1)
+
+    print('list(nwgraph.nodes)[0] is:' + str(list(nwgraph.nodes))[0])
+
+    graph_msg = nwgraph.draw_network_graph()
+    print('graph_msg is: ' + graph_msg)
+
+    assert(graph_msg) == 'Image generated.'

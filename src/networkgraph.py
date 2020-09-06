@@ -10,19 +10,18 @@ class NetworkGraph:
         self.depth = depth
         self.links = scrapedwebsite.ScrapedWebsite(url).formatted_strings()
         self.graph = websitegraph.WebsiteGraph(url).create_graph()
-    
+
+    def return_self_graph(self):
+        return self.graph
+
     def create_network_graph(self):
         for link in self.links:
             link_url = link['url']
             link_graph = websitegraph.WebsiteGraph(link_url).create_graph()
-
-            print('#####URL#####: ' + link_url)
-            print('***NODES***: ' + str(list(link_graph.nodes)))
-            print('***EDGES***: ' + str(list(link_graph.edges)))
-
+            
             # Add nodes and edges to original graph
             self.graph.add_nodes_from(link_graph)
-            #self.graph.add_edges_from(link_graph)
+            self.graph.add_edges_from(link_graph.edges)
 
         return self.graph
 

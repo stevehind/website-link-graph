@@ -7,12 +7,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
+from validator_collection import validators, checkers
 import time
 import sys
 
 class ScrapedWebsite:
     def __init__(self, url: str):
-        self.url = url
+        self.raw_url = url
+        if (checkers.is_url(self.raw_url)):
+            if (self.raw_url[-1] != '/'):
+                self.url = self.raw_url + '/'
+            else:
+                self.url = self.raw_url
+            
+        else:
+            raise Exception('Invalid URL')
 
         ## for selenium headless browser
         self.chrome_driver_path = '/Users/stevenhind/Google Drive/Programming/website-link-graph/chromedriver'
@@ -27,12 +36,36 @@ class ScrapedWebsite:
         self.webdriver = webdriver.Chrome(
             executable_path = self.chrome_driver_path, options = self.chrome_options
         )
-        self.webdriver.get(self.url)
-        title = self.webdriver.find_element_by_xpath("//title").text
-        self.webdriver.close()
 
-        print('The title is:' + title)
-        return title
+        wait = WebDriverWait(self.webdriver, 10)
+
+        self.webdriver.get(self.url)
+
+        xpaths = [
+            "//title", "//h1", "//h2", "//h3"
+        ]
+
+        pot_titles = []
+
+        # try to find titles in the title tag, and in the first header tags
+        for xpath in xpaths:
+            try:
+                title = self.webdriver.find_element_by_xpath(xpath).text
+            except:
+                title = ''
+            pot_titles.append(title)
+
+        # if '' is a title, and all the titles are the same, plug in placeholder test
+        if ((pot_titles[0] == '') & (len(set(pot_titles)) == 1)):
+            title = 'Could not find a title in <title>, <h1>, <h2> or <h3>'
+        # else, iterate through the titles and return the first instance that isn't ''
+        else:
+            for pot_title in pot_titles:
+                if (pot_title != ''):
+                    self.webdriver.close()
+                    return pot_title
+                else:
+                    pass
         
     def scrape_raw_links(self) ->  List[str]:
         self.webdriver = webdriver.Chrome(
@@ -56,23 +89,15 @@ class ScrapedWebsite:
         formatted_strings = []
 
         for link in link_strings:
-            # Sample string to parse
-            # '<a href="https://www.iana.org/domains/example">More information...</a>'
-            try:
-                url = re.search(r'a href="(.*?)">', link).group(1)
-            ## TODO: change this
-            except:
-                url = ''
             
-            # Fill in the title later when scraping the link itself?
-            title = ScrapedWebsite(url).return_title()
-            
-            if (url[0:4] == 'http'):
+            if (checkers.is_url(link)):
                 is_external = True
-                url = url
+                url = link
+                title = ScrapedWebsite(link).return_title()
             else:
                 is_external = False
-                url = ''
+                url = link
+                title = 'Not an external link'
             
             link_dict = {
                 'url': url,
@@ -80,7 +105,7 @@ class ScrapedWebsite:
                 'external': is_external
             }
 
-            if (link_dict['external']):
+            if ((link_dict['external']) & (link_dict['url'] != self.url)):
                 formatted_strings.append(link_dict)
 
         return formatted_strings
