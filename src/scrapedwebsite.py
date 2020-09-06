@@ -92,7 +92,10 @@ class ScrapedWebsite:
             
             if (checkers.is_url(link)):
                 is_external = True
-                url = link
+                if (link[-1] == '/'):
+                    url = link
+                else:
+                    url = link + '/'
                 title = ScrapedWebsite(link).return_title()
             else:
                 is_external = False

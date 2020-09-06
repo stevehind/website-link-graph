@@ -18,7 +18,7 @@ class NetworkGraph:
         for link in self.links:
             link_url = link['url']
             link_graph = websitegraph.WebsiteGraph(link_url).create_graph()
-            
+
             # Add nodes and edges to original graph
             self.graph.add_nodes_from(link_graph)
             self.graph.add_edges_from(link_graph.edges)
@@ -28,14 +28,17 @@ class NetworkGraph:
         ## TODO: nodes that already exist should be merged, rather than showing up as though they're unique
         ## does NetworkX already manage for this? (Check docs)
 
-    def draw_network_graph(self):
-        try:
-            graph = self.create_network_graph()
-        
-            nx.draw(graph, with_labels = True, fontsize = 6)
-            plt.savefig('./static/images/network_graph.png')
+    def draw_network_graph(self, id):
+        graph = self.create_network_graph()
+        path_string = './static/images/'
+        png_suffix = '.png'
 
-            return 'Image generated.'
+        try:
+            nx.draw(graph, with_labels = True, font_size = 6)
+            save_path = path_string + id + png_suffix
+            plt.savefig(save_path)
+
+            return save_path
         
         except:
             return 'Image not generated.'
