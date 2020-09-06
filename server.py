@@ -19,9 +19,9 @@ matplotlib.use('agg')
 
 app = Flask(__name__)
 
-@app.route('/', methods = ['GET'])
+@app.route('/api/v1/healthz', methods = ['GET'])
 def hello_world():
-    return "Hello, world!"
+    return "API is live!", 200
 
 @app.route('/api/v1/submit_url', methods = ['POST'])
 def handle_url():
