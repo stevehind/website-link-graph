@@ -10,6 +10,8 @@ from selenium.webdriver.support.expected_conditions import presence_of_element_l
 from validator_collection import validators, checkers
 import time
 import sys
+import os
+import platform
 
 class ScrapedWebsite:
     def __init__(self, url: str):
@@ -24,7 +26,11 @@ class ScrapedWebsite:
             raise Exception('Invalid URL')
 
         ## for selenium headless browser
-        self.chrome_driver_path = './chromedriver'
+    
+        if (platform.system() == 'Linux'):
+            self.chrome_driver_path = './chromedriver_linux'
+        else:
+            self.chrome_driver_path = './chromedriver_mac'
 
         self.chrome_options = Options()
         self.chrome_options.add_argument('--headless')
