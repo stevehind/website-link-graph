@@ -26,7 +26,7 @@ class ScrapedWebsite:
             raise Exception('Invalid URL')
 
         ## for selenium headless browser
-    
+        # bigger problem: need to have chrome on the deployed os: https://medium.com/@mikelcbrowne/running-chromedriver-with-python-selenium-on-heroku-acc1566d161c
         if (platform.system() == 'Linux'):
             self.chrome_driver_path = './chromedriver_linux'
         else:
