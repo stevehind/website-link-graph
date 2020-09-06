@@ -46,3 +46,4 @@ validator-collection==1.4.2
 webencodings==0.5.1
 Werkzeug==1.0.1
 wrapt==1.12.1
+Guincorn
