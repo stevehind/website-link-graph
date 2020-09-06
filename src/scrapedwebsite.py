@@ -24,7 +24,7 @@ class ScrapedWebsite:
             raise Exception('Invalid URL')
 
         ## for selenium headless browser
-        self.chrome_driver_path = '/Users/stevenhind/Google Drive/Programming/website-link-graph/chromedriver'
+        self.chrome_driver_path = './chromedriver'
 
         self.chrome_options = Options()
         self.chrome_options.add_argument('--headless')
