@@ -13,52 +13,42 @@ import sys
 class ScrapedWebsite:
     def __init__(self, url: str):
         self.url = url
-        ## TODO: Fix this
-        try:
-            request = requests.get(url)
-        except:
-            request = requests.get('https://www.example.com')
 
         ## for selenium headless browser
-        self.chrome_driver_path = '/Users/stevehind/Google Drive/Programming/website-link-graph/chromedriver'
+        self.chrome_driver_path = '/Users/stevenhind/Google Drive/Programming/website-link-graph/chromedriver'
 
         self.chrome_options = Options()
         self.chrome_options.add_argument('--headless')
-        self.webdriver = webdriver.Chrome(
-            executable_path = self.chrome_driver_path, options = self.chrome_options
-        )
 
     def return_url(self) -> str:
         return self.url
-
-    def return_page(self):
-        # return self.soup
-        ## scrape the website
-        with webdriver as driver:
-            # Set timeout time 
-            wait = WebDriverWait(driver, 10)
-            # retrive url in headless browser
-            return driver.get(self.url)
-            
-            # close
-            driver.close()
-
+    
     def return_title(self):
-        try:
-            # TODO: regex this to remove the title tags
-            raw_title = self.return_page().find_element_by_id('title')
-        except:
-            raw_title = ''
+        self.webdriver = webdriver.Chrome(
+            executable_path = self.chrome_driver_path, options = self.chrome_options
+        )
+        self.webdriver.get(self.url)
+        title = self.webdriver.find_element_by_xpath("//title").text
+        self.webdriver.close()
 
-        return str(raw_title)
-
+        print('The title is:' + title)
+        return title
+        
     def scrape_raw_links(self) ->  List[str]:
-        raw_links = self.return_title().find_element_by_id('a')
-        print(raw_links)
+        self.webdriver = webdriver.Chrome(
+            executable_path = self.chrome_driver_path, options = self.chrome_options
+        )
+        self.webdriver.get(self.url)
+        raw_links = self.webdriver.find_elements_by_tag_name('a')
 
+        ## TODO: convert to strings
         link_strings = []
         for link in raw_links:
-            link_strings.append(str(link)) 
+            url = link.get_attribute('href')
+            link_strings.append(str(url)) 
+        
+        self.webdriver.close()
+
         return link_strings
     
     def formatted_strings(self) -> List[dict]:
