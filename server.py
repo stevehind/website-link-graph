@@ -38,6 +38,7 @@ def submit_url():
 
     id_length = 8
     request_id = ''.join(random.choice(string.hexdigits + string.digits) for _ in range(id_length))
+
     request_path = '../../' + NetworkGraph(url, 1).draw_network_graph(request_id)
     print(request_path)
 
