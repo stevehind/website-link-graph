@@ -47,7 +47,7 @@ class ScrapedWebsite:
             executable_path = self.CHROMEDRIVER_PATH, options = self.chrome_options
         )
 
-        wait = WebDriverWait(self.webdriver, 10)
+        wait = WebDriverWait(self.webdriver, 1)
 
         self.webdriver.get(self.url)
 
