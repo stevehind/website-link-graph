@@ -13,7 +13,7 @@ import sys
 import os
 import platform
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(override=True)
 
 class ScrapedWebsite:
     def __init__(self, url: str):
@@ -28,15 +28,16 @@ class ScrapedWebsite:
             raise Exception('Invalid URL')
 
         ## for selenium headless browser
-        self.GOOGLE_CHROME_PATH = os.getenv("GOOGLE_CHROME_PATH")
+        self.GOOGLE_CHROME_PATH = os.getenv("GOOGLE_CHROME_BIN")
         self.CHROMEDRIVER_PATH = os.getenv("CHROMEDRIVER_PATH")
 
         self.chrome_options = Options()
         self.chrome_options.add_argument('--headless')
         self.chrome_options.add_argument('--disable-dev-shm-usage')
+        self.chrome_options.add_argument('--disable-gpu')
         self.chrome_options.add_argument('--no-sandbox')
 
-        self.chrome_options.binary_location = self.CHROMEDRIVER_PATH
+        self.chrome_options.binary_location = self.GOOGLE_CHROME_PATH
 
     def return_url(self) -> str:
         return self.url
