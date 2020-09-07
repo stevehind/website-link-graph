@@ -38,7 +38,7 @@ def submit_url():
 
     graph = ScrapedWebsite(url).formatted_strings()
 
-    return graph, 200
+    return str(graph), 200
     # id_length = 8
     # request_id = ''.join(random.choice(string.hexdigits + string.digits) for _ in range(id_length))
 
