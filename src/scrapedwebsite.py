@@ -1,7 +1,6 @@
 import requests
 from typing import List
 import re
-import chromedriver_binary
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -13,6 +12,8 @@ import time
 import sys
 import os
 import platform
+from dotenv import load_dotenv
+load_dotenv()
 
 class ScrapedWebsite:
     def __init__(self, url: str):
@@ -28,12 +29,12 @@ class ScrapedWebsite:
 
         ## for selenium headless browser
         # bigger problem: need to have chrome on the deployed os: https://medium.com/@mikelcbrowne/running-chromedriver-with-python-selenium-on-heroku-acc1566d161c
-        self.GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
-        self.CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+        self.GOOGLE_CHROME_PATH = os.getenv("GOOGLE_CHROME_PATH")
+        self.CHROMEDRIVER_PATH = os.getenv("CHROMEDRIVER_PATH")
 
         self.chrome_options = Options()
         self.chrome_options.add_argument('--headless')
-        self.chrome_options.add_argument('--disable-gpu')
+        self.chrome_options.add_argument('--disable-dev-shm-usage')
         self.chrome_options.add_argument('--no-sandbox')
 
         self.chrome_options.binary_location = self.CHROMEDRIVER_PATH
