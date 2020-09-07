@@ -36,7 +36,7 @@ def submit_url():
     if (checkers.is_url(url) != True):
         return Response('Invalid url, please try again.'), 400
 
-    graph = NetworkGraph(url, 1).create_network_graph()
+    graph = ScrapedWebsite(url).formatted_strings()
 
     return Response(graph), 200
     # id_length = 8
