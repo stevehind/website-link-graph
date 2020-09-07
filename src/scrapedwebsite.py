@@ -35,7 +35,7 @@ class ScrapedWebsite:
         self.chrome_options.add_argument('--disable-gpu')
         self.chrome_options.add_argument('--no-sandbox')
 
-        self.chrome_options.binary_location = GOOGLE_CHROME_PATH
+        self.chrome_options.binary_location = self.CHROMEDRIVER_PATH
 
     def return_url(self) -> str:
         return self.url
