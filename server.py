@@ -38,7 +38,7 @@ def submit_url():
 
     graph = NetworkGraph(url, 1).create_network_graph()
 
-    return Response(graph, 200)
+    return Response(graph), 200
     # id_length = 8
     # request_id = ''.join(random.choice(string.hexdigits + string.digits) for _ in range(id_length))
 
