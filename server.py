@@ -36,13 +36,16 @@ def submit_url():
     if (checkers.is_url(url) != True):
         return Response('Invalid url, please try again.'), 400
 
-    id_length = 8
-    request_id = ''.join(random.choice(string.hexdigits + string.digits) for _ in range(id_length))
+    graph = NetworkGraph(url, 1).create_network_graph()
 
-    request_path = '../../' + NetworkGraph(url, 1).draw_network_graph(request_id)
-    print(request_path)
+    return Response(graph, 200)
+    # id_length = 8
+    # request_id = ''.join(random.choice(string.hexdigits + string.digits) for _ in range(id_length))
 
-    return render_template('index.html', url = url, request_path = request_path), 200
+    # request_path = '../../' + NetworkGraph(url, 1).draw_network_graph(request_id)
+    # print(request_path)
+
+    # return render_template('index.html', url = url, request_path = request_path), 200
 
 if (__name__ == '__main__'):
     app.run(host='0.0.0.0', debug = True)
