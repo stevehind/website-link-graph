@@ -27,20 +27,22 @@ class ScrapedWebsite:
 
         ## for selenium headless browser
         # bigger problem: need to have chrome on the deployed os: https://medium.com/@mikelcbrowne/running-chromedriver-with-python-selenium-on-heroku-acc1566d161c
-        if (platform.system() == 'Linux'):
-            self.chrome_driver_path = './chromedriver_linux'
-        else:
-            self.chrome_driver_path = './chromedriver_mac'
+        self.GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+        self.CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
         self.chrome_options = Options()
         self.chrome_options.add_argument('--headless')
+        self.chrome_options.add_argument('--disable-gpu')
+        self.chrome_options.add_argument('--no-sandbox')
+
+        self.chrome_options.binary_location = GOOGLE_CHROME_PATH
 
     def return_url(self) -> str:
         return self.url
     
     def return_title(self):
         self.webdriver = webdriver.Chrome(
-            executable_path = self.chrome_driver_path, options = self.chrome_options
+            executable_path = self.CHROMEDRIVER_PATH, options = self.chrome_options
         )
 
         wait = WebDriverWait(self.webdriver, 10)
@@ -75,7 +77,7 @@ class ScrapedWebsite:
         
     def scrape_raw_links(self) ->  List[str]:
         self.webdriver = webdriver.Chrome(
-            executable_path = self.chrome_driver_path, options = self.chrome_options
+            executable_path = self.CHROMEDRIVER_PATH, options = self.chrome_options
         )
         self.webdriver.get(self.url)
         raw_links = self.webdriver.find_elements_by_tag_name('a')
