@@ -30,13 +30,8 @@ def test_draws_network_graph():
     url = 'https://stevehind.github.io/sms-steve/'
     nwgraph = networkgraph.NetworkGraph(url, 1)
     test_id = 'test_simple_graph'
-    
-    # graph = nwgraph.create_network_graph()
-    # print('First graph node is: ' + str(list(graph.nodes)[0]))
-    # assert list(graph.nodes)[0] == 'foobar'
 
-    graph_msg = nwgraph.draw_network_graph()
-    print('graph_msg is: ' + graph_msg)
+    graph_msg = nwgraph.draw_network_graph(test_id)
 
     assert(graph_msg) == './static/images/' + test_id + '.png'
 
