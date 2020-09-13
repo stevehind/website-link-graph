@@ -34,7 +34,7 @@ def get_status_of_jobs(ids: list):
         job = q.fetch_job(id)
         job_status = job.get_status()
         func_name = job.func_name
-        enuqued_at = job.enuqued_at
+        enqueued_at = job.enqueued_at
         started_at = job.started_at
         ended_at = job.ended_at
         traceback = job.exc_info
@@ -42,7 +42,7 @@ def get_status_of_jobs(ids: list):
             'job_id':  id,
             'job_status': job_status,
             'function': func_name,
-            'equneued_at': enuqued_at,
+            'equneued_at': enqueued_at,
             'started_at': started_at,
             'ended_at': ended_at,
             'traceback': traceback
