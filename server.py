@@ -33,10 +33,18 @@ def get_status_of_jobs(ids: list):
     for id in ids:
         job = q.fetch_job(id)
         job_status = job.get_status()
+        func_name = job.func_name
+        enuqued_at = job.enuqued_at
+        started_at = job.started_at
+        ended_at = job.ended_at
         traceback = job.exc_info
         results.append({
             'job_id':  id,
             'job_status': job_status,
+            'function': func_name,
+            'equneued_at': enuqued_at,
+            'started_at': started_at,
+            'ended_at': ended_at,
             'traceback': traceback
         })
 
@@ -63,7 +71,6 @@ def submit_url():
 
     nwgraph = networkgraph.NetworkGraph(url, 1)
     if (nwgraph):
-        print('There was a nwgraph here!')
         job = q.enqueue(networkgraph.NetworkGraph(url,1).draw_network_graph, request_id,
             job_timeout = '1h',
             job_id = request_id
