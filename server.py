@@ -85,7 +85,8 @@ def display_job(request_id):
     job = q.fetch_job(request_id)
     job_status = job.get_status()
     
-    request_path = '../../../static/images/' + request_id + '.png'
+    s3_url = 'https://website-link-graph.s3-us-west-1.amazonaws.com/'
+    request_path = s3_url + request_id
     return render_template('index.html', request_path = request_path, job_status = job_status), 200
 
 @app.route('/api/v1/queued_jobs')
