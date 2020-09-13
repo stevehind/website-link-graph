@@ -66,6 +66,12 @@ def display_job(request_id):
     request_path = '../../static/images' + request_id + '.png'
     return render_template('index.html', request_path = request_path, job_status = job_status), 200
 
+@app.route('/api/v1/queued_jobs')
+def get_queued_jobs():
+    queued_jobs = q.jobs
+
+    return jsonify(queued_jobs), 200
+
 @app.route('/api/v1/failed_jobs')
 def get_failed_jobs():
     registry = q.failed_job_registry
