@@ -30,7 +30,7 @@ q = Queue(connection=conn)
 def get_status_of_jobs(ids: list):
     results = []
 
-    for id in queued_jobs_ids:
+    for id in ids:
         job = q.fetch_job(id)
         job_status = job.get_status()
         traceback = job.exc_info
