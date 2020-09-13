@@ -27,6 +27,21 @@ app = Flask(__name__)
 # establish worker queue
 q = Queue(connection=conn)
 
+def get_status_of_jobs(ids: list):
+    results = []
+
+    for id in queued_jobs_ids:
+        job = q.fetch_job(id)
+        job_status = job.get_status()
+        traceback = job.exc_info
+        results.append({
+            'job_id':  id,
+            'job_status': job_status,
+            'traceback': traceback
+        })
+
+    return results
+
 @app.route('/', methods = ['GET'])
 def home():
     return "Nothing to see here, move along.", 200
@@ -68,26 +83,18 @@ def display_job(request_id):
 
 @app.route('/api/v1/queued_jobs')
 def get_queued_jobs():
-    queued_jobs = q.jobs
+    queued_job_ids = q.job_ids
 
-    return jsonify(queued_jobs), 200
+    results = get_status_of_jobs(queued_job_ids)
+
+    return jsonify(results), 200
 
 @app.route('/api/v1/failed_jobs')
 def get_failed_jobs():
     registry = q.failed_job_registry
-    ids = registry.get_job_ids()
+    failed_job_ids = registry.get_job_ids()
 
-    results = []
-
-    for id in ids:
-        job = q.fetch_job(id)
-        job_status = job.get_status()
-        traceback = job.exc_info
-        results.append({
-            'job_id':  id,
-            'job_status': job_status,
-            'traceback': traceback
-        })
+    results = get_status_of_jobs(failed_job_ids)
 
     return jsonify(results), 200
 
