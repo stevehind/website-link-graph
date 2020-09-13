@@ -63,7 +63,7 @@ def display_job(request_id):
     job = q.fetch_job(request_id)
     job_status = job.get_status()
     
-    request_path = '../../static/images' + request_id + '.png'
+    request_path = '../../../static/images/' + request_id + '.png'
     return render_template('index.html', request_path = request_path, job_status = job_status), 200
 
 @app.route('/api/v1/queued_jobs')
