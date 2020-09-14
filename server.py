@@ -81,6 +81,9 @@ def submit_url():
 @app.route('/api/v1/submit_url/<string:request_id>', methods = ['GET'])
 def display_job(request_id):
     job = q.fetch_job(request_id)
+    if (job == None):
+        return Response('No submission with that id. Please check and try again.'), 400
+
     job_status = job.get_status()
     
     s3_url = 'https://website-link-graph.s3-us-west-1.amazonaws.com/'
