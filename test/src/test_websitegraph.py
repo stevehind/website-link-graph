@@ -13,14 +13,14 @@ def create_new_website_and_graph(url):
         'graph': WebsiteGraph(target_url)
     }
 
-context = create_new_website_and_graph(target_url)    
-
 def test_returns_graph():
+    context = create_new_website_and_graph(target_url)    
     graph_with_node = context['graph'].add_url_as_node()
     assert list(graph_with_node.nodes)[0] == target_url
 
 # Should really decouple this from above test, e.g. right now the test implicitly requires the test above to have run.
 def test_adds_links_as_nodes():
+    context = create_new_website_and_graph(target_url)    
     graph_with_links_as_nodes = context['graph'].add_links_as_nodes()
 
     assert list(graph_with_links_as_nodes.nodes)[0:4] == [
@@ -34,6 +34,7 @@ def test_adds_links_as_nodes():
     assert len(list(graph_with_links_as_nodes.nodes)) == 9
 
 def test_create_graph_adds_edges():
+    context = create_new_website_and_graph(target_url)    
     graph_with_edges_between_nodes = context['graph'].create_graph()
     assert list(graph_with_edges_between_nodes.edges)[0:3] == [
         ('https://www.stevehind.me/','https://stevehind-dog-merch.builtwithdark.com/'),
@@ -42,5 +43,6 @@ def test_create_graph_adds_edges():
     ]
 
 def test_output_graph():
+    context = create_new_website_and_graph(target_url)    
     graph_image = context['graph'].display_graph()
     assert graph_image == 'Image generated.'
