@@ -41,7 +41,6 @@ def get_status_of_jobs(ids: list):
         results.append({
             'job_id':  id,
             'job_status': job_status,
-            'function': func_name,
             'equneued_at': enqueued_at,
             'started_at': started_at,
             'ended_at': ended_at,
