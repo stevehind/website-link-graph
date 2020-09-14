@@ -33,7 +33,6 @@ def get_status_of_jobs(ids: list):
     for id in ids:
         job = q.fetch_job(id)
         job_status = job.get_status()
-        func_name = job.func_name
         enqueued_at = job.enqueued_at
         started_at = job.started_at
         ended_at = job.ended_at
