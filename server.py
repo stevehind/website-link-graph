@@ -78,7 +78,7 @@ def submit_url():
     else:
         return 'Could not instantiate networkgraph object.', 500
 
-    return 'Processing in background. View result in about 10 minutes at: http://0.0.0.0:5000/api/v1/submit_url/' + request_id, 200
+    return 'Processing in background. View result in about 10 minutes at: https://website-link-graph.herokuapp.com/api/v1/' + request_id, 200
 
 @app.route('/api/v1/submit_url/<string:request_id>', methods = ['GET'])
 def display_job(request_id):
