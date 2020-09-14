@@ -1,8 +1,29 @@
 import networkx as nx
 from matplotlib import pyplot as plt
+import os
+import io
 
 import websitegraph
 import scrapedwebsite
+
+import boto3
+from botocore.config import Config
+
+config = Config(
+    region_name = 'us-west-2',
+    signature_version = 'v4',
+    retries = {
+        'max_attempts': 10,
+        'mode': 'standard'
+    }
+)
+
+s3 = boto3.resource('s3',
+    aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+)
+target_bucket = os.getenv('S3_BUCKET')
+
 
 class NetworkGraph:
     def __init__(self, url, depth):
@@ -31,15 +52,17 @@ class NetworkGraph:
 
     def draw_network_graph(self, id):
         graph = self.create_network_graph()
-        path_string = './static/images/'
-        png_suffix = '.png'
 
-        try:
+        try:            
             nx.draw(graph, with_labels = True, font_size = 6)
-            save_path = path_string + id + png_suffix
-            plt.savefig(save_path)
 
-            return save_path
+            img_data = io.BytesIO()
+            plt.savefig(img_data, format = 'png')
+            img_data.seek(0)
+            
+            s3.Bucket(target_bucket).put_object(Body = img_data, ContentType = 'image/png', Key = id)
+
+            return 'Image saved to s3 bucket as ' + id + '.png'
         
         except:
             return 'Image not generated.'
